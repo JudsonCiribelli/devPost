@@ -20,7 +20,7 @@ const InputComponent = ({
   return (
     <div>
       <input
-        className="w-full bg-white text-black p-2 rounded-lg outline-none"
+        className="w-full bg-white text-black p-2 rounded-lg outline-none mb-2"
         {...register(name, rules)}
         id={name}
         type={type}
