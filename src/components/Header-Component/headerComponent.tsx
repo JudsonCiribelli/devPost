@@ -24,7 +24,7 @@ const HeaderComponent = () => {
   };
 
   return (
-    <header className="w-full flex items-center justify-around p-4 bg-slate-200">
+    <header className="w-full flex items-center justify-around p-4 bg-slate-200 sm:w-full">
       <Link to="/">
         <div className="bg-amber-50 p-2 rounded-lg ">
           <h1 className="text-2xl font-medium lg:text-3xl">
