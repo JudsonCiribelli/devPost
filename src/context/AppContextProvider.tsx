@@ -1,16 +1,16 @@
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { auth } from "../services/firebaseConection";
 import { AppContext } from "./AppContext";
 
 interface AppContextProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export interface UserContextProps {
   name: string | null;
-  uid: string;
+  uid?: string;
   email: string | null;
 }
 export const AppContextProvider = ({ children }: AppContextProviderProps) => {
@@ -25,6 +25,7 @@ export const AppContextProvider = ({ children }: AppContextProviderProps) => {
           email: user?.email,
           uid: user?.uid,
         });
+
         setLoadingAuth(false);
       } else {
         setUser(null);
@@ -36,6 +37,7 @@ export const AppContextProvider = ({ children }: AppContextProviderProps) => {
       unSub();
     };
   }, []);
+
   const handleInfoUser = ({ name, email, uid }: UserContextProps) => {
     setUser({ name, email, uid });
   };
