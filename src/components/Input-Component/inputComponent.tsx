@@ -7,6 +7,7 @@ interface InputComponentProps {
   register: UseFormRegister<any>;
   error?: string;
   rules?: RegisterOptions;
+  author?: string;
 }
 
 const InputComponent = ({
@@ -16,6 +17,7 @@ const InputComponent = ({
   register,
   error,
   rules,
+  author,
 }: InputComponentProps) => {
   return (
     <div>
@@ -26,6 +28,7 @@ const InputComponent = ({
         type={type}
         name={name}
         placeholder={placeholder}
+        value={author}
       />
       {error && <p className="text-red-600 mb-2 font-semibold">{error}</p>}
     </div>
