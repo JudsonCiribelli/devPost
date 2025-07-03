@@ -1,8 +1,8 @@
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
 import toast from "react-hot-toast";
-import { FaUser } from "react-icons/fa";
-import { IoLogOut } from "react-icons/io5";
+import { FaSignInAlt, FaUser } from "react-icons/fa";
+import { RiLogoutCircleFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 
 import { AppContext } from "../../context/AppContext";
@@ -35,21 +35,36 @@ const HeaderComponent = () => {
           </h1>
         </div>
       </Link>
-      <Link to={`/user/${user?.uid}`}>
+      <div className="flex gap-2">
+        <Link to={`/user/${user?.uid}`}>
+          {signed ? (
+            <button
+              className="cursor-pointer bg-amber-50 p-2 rounded-full"
+              onClick={handleRedirectUser}
+            >
+              <FaSignInAlt size={32} onClick={handleSignOutUser} />
+            </button>
+          ) : (
+            <button className="cursor-pointer bg-amber-50 p-2 rounded-full ">
+              {" "}
+              <RiLogoutCircleFill size={32} />
+            </button>
+          )}
+        </Link>
         {signed ? (
-          <button
-            className="cursor-pointer bg-amber-50 p-2 rounded-full"
-            onClick={handleRedirectUser}
+          <Link
+            className="cursor-pointer bg-amber-50 p-2 rounded-full "
+            to={`/user/${user?.uid}`}
           >
-            <IoLogOut size={32} onClick={handleSignOutUser} />
-          </button>
-        ) : (
-          <button className="cursor-pointer bg-amber-50 p-2 rounded-full  ">
             {" "}
-            <FaUser size={32} />
-          </button>
+            <button>
+              <FaUser size={30} />
+            </button>
+          </Link>
+        ) : (
+          <div></div>
         )}
-      </Link>
+      </div>
     </header>
   );
 };
