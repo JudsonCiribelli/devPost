@@ -1,7 +1,8 @@
 import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
+import { AppContext } from "../../context/AppContext";
 import { db } from "../../services/firebaseConection";
 
 export interface PostProps {
@@ -13,6 +14,7 @@ export interface PostProps {
 
 const PostsPage = () => {
   const [posts, setPosts] = useState<PostProps[]>([]);
+  const { user } = useContext(AppContext);
   const navigate = useNavigate();
   useEffect(() => {
     handleSearchPosts();
@@ -42,14 +44,20 @@ const PostsPage = () => {
   };
 
   return (
-    <main className="w-full h-screen flex flex-col bg-slate-400 gap-4">
+    <main className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
         <div
-          className="flex flex-col bg-slate-100 m-2 gap-2 rounded-sm p-2"
+          className="flex flex-col bg-slate-100 m-2 gap-2 rounded-sm p-2 lg:flex "
           key={post.id}
         >
           <div className="flex items-center justify-between">
-            <h1 className="text-black font-medium text-xl">{post.author}</h1>
+            <Link
+              className="p-1 border-1 rounded-lg bg-black"
+              to={`/user/${user?.uid}`}
+            >
+              <h1 className="text-white font-medium text-xl">{post.author}</h1>
+            </Link>
+
             <p className="text-sm text-red-500 font-medium">{post.id}</p>
           </div>
           <hr className="bg-slate-900" />
