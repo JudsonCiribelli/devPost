@@ -1,7 +1,7 @@
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
 import toast from "react-hot-toast";
-import { FaSignInAlt, FaUser } from "react-icons/fa";
+import { FaSignInAlt } from "react-icons/fa";
 import { RiLogoutCircleFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -51,19 +51,6 @@ const HeaderComponent = () => {
             </button>
           )}
         </Link>
-        {signed ? (
-          <Link
-            className="cursor-pointer bg-amber-50 p-2 rounded-full "
-            to={`/user/${user?.uid}`}
-          >
-            {" "}
-            <button>
-              <FaUser size={30} />
-            </button>
-          </Link>
-        ) : (
-          <div></div>
-        )}
       </div>
     </header>
   );
