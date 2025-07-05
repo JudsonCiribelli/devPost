@@ -1,5 +1,6 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 import { AppContext } from "../../context/AppContext";
@@ -16,6 +17,7 @@ const PostsPage = () => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const { user } = useContext(AppContext);
   const navigate = useNavigate();
+
   useEffect(() => {
     handleSearchPosts();
   }, [posts]);
@@ -43,8 +45,21 @@ const PostsPage = () => {
       });
   };
 
+  const handleDeletePost = async (id: string) => {
+    const postItem = id;
+    const postRef = doc(db, "posts", postItem);
+    await deleteDoc(postRef)
+      .then(() => {
+        toast.success("Post deletado com sucesso!");
+        setPosts(posts.filter((post) => post.id !== id));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
-    <main className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+    <main className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
         <div
           className="flex flex-col bg-slate-100 m-2 gap-2 rounded-sm p-2 lg:flex "
@@ -66,9 +81,16 @@ const PostsPage = () => {
               <h1 className="font-bold text-black text-xl">{post.author}:</h1>
               <h1 className="text-black text-xl">{post.title}</h1>
             </div>
-            <div className="w-full border-1 rounded-lg p-1 h-30 mb-4">
+            <div className="w-full border-1 rounded-lg p-1 h-30 ">
               {post.description}
             </div>
+
+            <button
+              onClick={() => handleDeletePost(post.id)}
+              className="w-full p-2 bg-slate-800 text-white font-medium rounded-lg cursor-pointer mb-2"
+            >
+              Deletar Post
+            </button>
           </div>
         </div>
       ))}
