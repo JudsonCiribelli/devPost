@@ -1,4 +1,11 @@
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,31 +26,31 @@ const PostsPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    handleSearchPosts();
-  }, [posts]);
+    const loadPosts = () => {
+      if (!user?.uid) {
+        navigate("/login", { replace: true });
+        return;
+      }
+      const postRef = collection(db, "posts");
+      const queryRef = query(postRef, where("uuid", "==", user.uid));
 
-  const handleSearchPosts = async () => {
-    const PostRef = collection(db, "posts");
-    await getDocs(PostRef)
-      .then((snapshot) => {
-        const lista: PostProps[] = [];
+      getDocs(queryRef).then((snapshot) => {
+        const listPosts: PostProps[] = [];
         snapshot.forEach((doc) => {
-          if (!doc.data()) {
-            navigate("/");
-          }
-          lista.push({
+          listPosts.push({
             id: doc.id,
-            title: doc.data().Title,
-            author: doc.data().Author,
-            description: doc.data().Description,
+            title: doc.data().title,
+            author: doc.data().author,
+            description: doc.data().description,
           });
         });
-        setPosts(lista);
-      })
-      .catch((error) => {
-        console.log(error);
+
+        setPosts(listPosts);
+        console.log(listPosts);
       });
-  };
+    };
+    loadPosts();
+  }, [user]);
 
   const handleDeletePost = async (id: string) => {
     const postItem = id;
